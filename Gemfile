@@ -14,5 +14,6 @@ group :development do
   gem 'crack'
   gem 'rubyzip'
   gem 'diplomat' , '~> 2.6.0'
+  gem "nexus"
   gem 'tiller', :path => '.'
 end

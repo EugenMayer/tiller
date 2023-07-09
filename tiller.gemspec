@@ -3,7 +3,7 @@ require './lib/tiller/version.rb'
 Gem::Specification.new do |s|
   s.name = 'tiller'
   s.version = VERSION
-  s.date = '2018-02-04'
+  s.date = '2032-07-09'
   s.summary = 'Dynamic configuration file generation'
   s.description = 'A tool to create configuration files from a variety of sources, particularly useful for Docker containers. See https://github.com/markround/tiller for examples and documentation.'
   s.authors = ['Mark Dastmalchi-Round']
@@ -53,6 +53,6 @@ Gem::Specification.new do |s|
   s.homepage =
       'http://www.markround.com/blog/categories/tiller/'
   s.license = 'MIT'
-  s.metadata = { 'source' => 'https://github.com/markround/tiller' }
-  s.required_ruby_version = '>= 1.9.2'
+  s.metadata = { 'source' => 'https://github.com/eugenmayer/tiller' }
+  s.required_ruby_version = '>= 2.7.0'
 end

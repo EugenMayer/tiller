@@ -2,7 +2,7 @@
 Feature: Vault plugin
 
   Scenario: Download Vault
-    When I have downloaded vault "0.6.1" to "/tmp/vault.zip"
+    When I have downloaded vault "1.14.0" to "/tmp/vault.zip"
     And I have unzipped the archive "/tmp/vault.zip"
     And I have made the file "/tmp/vault" executable"
     Then an absolute file named "/tmp/vault" should exist

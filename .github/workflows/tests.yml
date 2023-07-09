@@ -17,13 +17,11 @@ jobs:
           bundler-cache: true
       - name: Install vault
         run: |
-          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-          sudo apt update && sudo apt install vault
+          wget -O /tmp/vault.zip https://releases.hashicorp.com/vault/1.14.0/vault_1.14.0_linux_amd64.zip
+          cd /usr/local/bin/ && unzip /tmp/vault.zip
       - name: Install consul
         run: |
-          wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
-          sudo apt update && sudo apt install consul
+          wget -O /tmp/consul.zip https://releases.hashicorp.com/consul/1.16.0/consul_1.16.0_linux_amd64.zip
+          cd /usr/local/bin/ && unzip /tmp/consul.zip
       - name: Run tests
         run: bundle exec rake

@@ -54,5 +54,5 @@ Gem::Specification.new do |s|
       'http://www.markround.com/blog/categories/tiller/'
   s.license = 'MIT'
   s.metadata = { 'source' => 'https://github.com/eugenmayer/tiller' }
-  s.required_ruby_version = '>= 2.5.0'
+  s.required_ruby_version = '>= 2.7.0'
 end

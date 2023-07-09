@@ -1,6 +1,7 @@
 # 1.x
   * 1.6.0 (09/Jun/2023)
     * Ruby 3.x support
+    * BREAKING: Minimal ruby is now 2.7.x
     * BREAKING: Test-support for vault was disabled due to setup issue. - so vault might be broken!
   
   * 1.5.0 (02/Feb/2019)

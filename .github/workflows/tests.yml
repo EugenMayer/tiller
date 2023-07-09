@@ -15,13 +15,13 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - name: Install vault
-        run: |
-          wget -O /tmp/vault.zip https://releases.hashicorp.com/vault/1.14.0/vault_1.14.0_linux_amd64.zip
-          cd /usr/local/bin/ && unzip /tmp/vault.zip
-      - name: Install consul
-        run: |
-          wget -O /tmp/consul.zip https://releases.hashicorp.com/consul/1.16.0/consul_1.16.0_linux_amd64.zip
-          cd /usr/local/bin/ && unzip /tmp/consul.zip
+#      - name: Install vault
+#        run: |
+#          wget -O /tmp/vault.zip https://releases.hashicorp.com/vault/1.14.0/vault_1.14.0_linux_amd64.zip
+#          cd /usr/local/bin/ && unzip /tmp/vault.zip
+#      - name: Install consul
+#        run: |
+#          wget -O /tmp/consul.zip https://releases.hashicorp.com/consul/1.16.0/consul_1.16.0_linux_amd64.zip
+#          cd /usr/local/bin/ && unzip /tmp/consul.zip
       - name: Run tests
         run: bundle exec rake

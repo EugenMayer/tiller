@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 group :development do
   gem 'json' , '~> 2.5.0'

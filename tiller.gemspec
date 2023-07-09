@@ -53,6 +53,6 @@ Gem::Specification.new do |s|
   s.homepage =
       'http://www.markround.com/blog/categories/tiller/'
   s.license = 'MIT'
-  s.metadata = { 'source' => 'https://github.com/markround/tiller' }
-  s.required_ruby_version = '>= 1.9.2'
+  s.metadata = { 'source' => 'https://github.com/eugenmayer/tiller' }
+  s.required_ruby_version = '>= 2.5.0'
 end

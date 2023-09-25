@@ -51,7 +51,7 @@ class ZookeeperDataSource < Tiller::DataSource
   # Helper method, not used by DataSource API
   def get_values(path)
     values = {}
-    if @zk.exists?(path)
+    if @zk.exist?(path)
       keys = @zk.children(path)
       keys.each do |key|
         value =  @zk.get("#{path}/#{key}")

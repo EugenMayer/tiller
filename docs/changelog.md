@@ -1,4 +1,6 @@
 # 1.x
+  * 1.6.1 (09/Jun/2023)
+    * Ruby 3.2.x support
   * 1.6.0 (09/Jun/2023)
     * Ruby 3.x support
     * BREAKING: Minimal ruby is now 2.7.x

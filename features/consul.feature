@@ -1,14 +1,14 @@
 Feature: Consul plugin
 
   Scenario: Download Consul
-    When I have downloaded consul "1.22.6" to "./tmp/consul.zip"
-    And I have system-unzipped the archive "./tmp/consul.zip"
-    And I have made the file "./tmp/consul" executable"
-    Then an absolute file named "./tmp/consul" should exist
+    When I have downloaded consul "1.22.6" to "/tmp/consul/consul.zip"
+    And I have system-unzipped the archive "/tmp/consul/consul.zip"
+    And I have made the file "/tmp/consul/consul" executable"
+    Then an absolute file named "/tmp/consul/consul" should exist
 
   Scenario: Start consul daemon in stand-alone mode
     Given an empty consul data directory
-    When I start my daemon with "./tmp/consul agent -server -bootstrap -client=0.0.0.0 -data-dir=/tmp/tiller-consul-data -advertise=127.0.0.1"
+    When I start my daemon with "/tmp/consul/consul agent -server -bootstrap -client=0.0.0.0 -data-dir=/tmp/tiller-consul-data -advertise=127.0.0.1"
     Then a daemon called "consul" should be running
 
   Scenario: Populate consul with test data

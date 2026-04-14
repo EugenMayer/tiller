@@ -21,6 +21,9 @@ When(/^I have downloaded consul "(.+)" to "(.+)"$/) do |version, path|
     fail!("Unsupported platform for consul")
   end
   puts "Downloading #{uri}"
+
+  dirname = File.dirname(path)
+  system("mkdir -p #{dirname}")
   hashicorp_download(uri, path)
 end
 

@@ -1,3 +1,6 @@
+# 2.x
+  * Ruby 3.3 support
+  * removed zookeeper
 # 1.x
   * 1.6.1 (09/Jun/2023)
     * Ruby 3.2.x support

@@ -3,7 +3,7 @@ require './lib/tiller/version.rb'
 Gem::Specification.new do |s|
   s.name = 'tiller'
   s.version = VERSION
-  s.date = '2024-08-10'
+  s.date = '2026-04-14'
   s.summary = 'Dynamic configuration file generation'
   s.description = 'A tool to create configuration files from a variety of sources, particularly useful for Docker containers. See https://github.com/markround/tiller for examples and documentation.'
   s.authors = ['Mark Dastmalchi-Round', 'Eugen Mayer']
@@ -29,7 +29,6 @@ Gem::Specification.new do |s|
     lib/tiller/kv.rb
     lib/tiller/templatesource.rb
     lib/tiller/data/file.rb
-    lib/tiller/data/zookeeper.rb
     lib/tiller/data/http.rb
     lib/tiller/data/environment.rb
     lib/tiller/data/environment_json.rb
@@ -42,7 +41,6 @@ Gem::Specification.new do |s|
     lib/tiller/data/vault.rb
     lib/tiller/data/ansible_vault.rb
     lib/tiller/template/file.rb
-    lib/tiller/template/zookeeper.rb
     lib/tiller/template/http.rb
     lib/tiller/template/consul.rb
     lib/tiller/template/vault.rb

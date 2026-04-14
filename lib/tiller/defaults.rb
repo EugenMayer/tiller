@@ -18,19 +18,6 @@ module Tiller
   }
 end
 
-# Defaults for the Zookeeper data and template sources
-module Tiller::Zookeeper
-  Defaults = {
-    'timeout'   => 5,
-    'templates' => '/tiller/%e',
-
-    'values'    => {
-        'global'    => '/tiller/globals',
-        'template'  => '/tiller/%e/%t/values',
-        'target'    => '/tiller/%e/%t/target_values'
-    }
-  }
-end
 
 # Defaults for the Vault data and template sources
 module Tiller::Vault

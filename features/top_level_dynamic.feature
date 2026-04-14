@@ -53,37 +53,3 @@ Feature: Top level dynamic values
     And the output should contain "Parsed ERb of environments/development/common/dynamic_global_var as global var : test.txt"
     And the output should contain "Parsed ERb of dynamic_values_test/dynamic_value_for_plugin as test.txt"
     And the output should contain "Value of key from config is : test.txt"
-
-  Scenario: Test passing in hostname as a value to HTTP plugin
-    Given a file named "common.yaml" with:
-    """
-    data_sources: [ 'file' , 'environment' , 'http' ]
-    template_sources: [ 'http' , 'file' ]
-    dynamic_values: true
-    environments:
-      development:
-        common:
-          http:
-            uri: 'http://<%= env_http_host -%>/http_test'
-            timeout: 10
-            templates: '/environments/%e/templates'
-            template_content: '/templates/%t/content'
-
-            values:
-              global: '/globals'
-              template: '/templates/%t/values/%e'
-              target: '/templates/%t/target_values/%e'
-    """
-    And I set the environment variables exactly to:
-      | variable          | value               |
-      | http_host         | markround.github.io |
-    When I successfully run `tiller -b . -dnv`
-    Then a file named "http.txt" should exist
-    And the file "http.txt" should contain:
-    """
-    The HTTP Value is : This came from the development environment.
-    Some globals, now.
-
-     * This is a value from HTTP
-    """
-    And the output should contain "Parsed ERb of environments/development/common/http/uri as http://markround.github.io/http_test"

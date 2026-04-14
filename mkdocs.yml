@@ -37,7 +37,6 @@ pages:
       - Reusable Templates: 'plugins/reusable.md'
       - Hashicorp Vault: 'plugins/vault.md'
       - XML File: 'plugins/xml_file.md'
-      - Zookeeper: 'plugins/zookeeper.md'
 - Developer Information: 'developers.md'
 - Further Reading: 'resources.md'
 - About:

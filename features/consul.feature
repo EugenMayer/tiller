@@ -2,7 +2,7 @@ Feature: Consul plugin
 
   Scenario: Download Consul
     When I have downloaded consul "1.22.6" to "./tmp/consul.zip"
-    And I have unzipped the archive "./tmp/consul.zip" to ./tmp
+    I have system-unzipped the archive "./tmp/consul.zip"
     And I have made the file "./tmp/consul" executable"
     Then an absolute file named "./tmp/consul" should exist
 

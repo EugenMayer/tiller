@@ -14,3 +14,8 @@ When(/^I have unzipped the archive "(.+)"$/) do |archive|
     end
   end
 end
+
+When(/^I have system-unzipped the archive "(.+)"$/) do |archive|
+  dirname = File.dirname(archive)
+  system("unzip #{archive} -d #{dirname}")
+end

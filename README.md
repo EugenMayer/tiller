@@ -20,6 +20,11 @@ You may like to read the [Quickstart](http://tiller.readthedocs.io/en/latest/qui
 
 There is also a [Gitter chatroom](https://gitter.im/markround/tiller) for you to ask any questions, suggest new features and talk to other users.
 
+# Tests
+
+```bash
+bundle exec rake
+```
 # Status
 
 Please see the status of the original project under https://github.com/markround/tiller#status

@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 
 group :development do
-  gem 'json' , '~> 2.19.3'
+  gem 'json' , '~> 3.1.0'
   gem 'rake'
   gem 'rspec'
-  gem 'aruba', '~> 2.3.3'
+  gem 'aruba', '~> 2.4.0'
   gem 'cucumber', '~> 8.0.0'
   gem 'httpclient'
   gem 'oj'

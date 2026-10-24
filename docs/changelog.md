@@ -1,4 +1,10 @@
 # 3.x
+  * 3.0.1 (24/Oct/2026)
+    * banner changed
+    * -v is now version, not verbose
+  * 3.0.1 (24/Oct/2026)
+    * banner changed
+    * -v is now version, not verbose
   * 3.0.0 (24/Oct/2026)
     * BREAKING: stripped down to the `defaults`, `file`, `consul` and `environment` data sources and the `file` template source
     * BREAKING: removed the `vault`, `ansible_vault`, `http`, `random`, `xml_file`, `external_file`, `environment_json` and `environment_nested` data sources

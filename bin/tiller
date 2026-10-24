@@ -34,7 +34,6 @@ EXIT_SUCCESS = 0
 # And we're on our way...
 module Tiller
 
-  puts "tiller v#{VERSION} (https://github.com/markround/tiller) <github@markround.com>"
   if RUBY_VERSION < SUPPORTED_RUBY_VERSION
     puts "Warning : Support for Ruby versions < #{SUPPORTED_RUBY_VERSION} is deprecated."
     puts "          See http://tiller.readthedocs.io/en/latest/requirements/"

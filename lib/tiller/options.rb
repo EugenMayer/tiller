@@ -3,7 +3,7 @@ def parse_options(config)
     opts.on('-n', '--no-exec', 'Do not execute any processes') do
       config[:no_exec] = true
     end
-    opts.on('-v', '--verbose', 'Display verbose output') do
+    opts.on('--verbose', 'Display verbose output') do
       config[:verbose] = true
     end
     opts.on('-d', '--debug', 'Display debug output') do
@@ -35,6 +35,11 @@ def parse_options(config)
     end
     opts.on('--plugin-api-version [VERS]', 'Specify the plugin API version to use') do |plugin_api_version|
       config['plugin_api_version'] = plugin_api_version
+    end
+
+    opts.on('-v', '--version', 'Display the version and exit') do
+      puts "tiller v#{VERSION}"
+      exit(EXIT_SUCCESS)
     end
 
     opts.on('-h', '--help', 'Display this screen') do

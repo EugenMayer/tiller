@@ -30,7 +30,7 @@ Feature: Configuration from config.d
     ---
     data_sources: [ "file" , "environment" ]
     """
-    When I successfully run `tiller -b . -n -v`
+    When I successfully run `tiller -b . -n --verbose`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """
@@ -62,7 +62,7 @@ Feature: Configuration from config.d
           config:
             test_var: 'From 02-environments.yaml'
     """
-    When I successfully run `tiller -b . -n -v`
+    When I successfully run `tiller -b . -n --verbose`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """
@@ -100,7 +100,7 @@ Feature: Configuration from config.d
           config:
             additional_var: 'From 02-development-additional.yaml'
     """
-    When I successfully run `tiller -b . -n -v`
+    When I successfully run `tiller -b . -n --verbose`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """

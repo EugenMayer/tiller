@@ -21,7 +21,7 @@ Feature: Consul plugin
 
   Scenario: Test dev environment template generation with Consul
     Given I use a fixture named "consul"
-    When I successfully run `tiller -b . -v -n`
+    When I successfully run `tiller -b . --verbose -n`
     Then a file named "template1.txt" should exist
     And the file "template1.txt" should contain:
     """
@@ -44,7 +44,7 @@ Feature: Consul plugin
 
   Scenario: Test prod environment template generation with Consul
     Given I use a fixture named "consul"
-    When I successfully run `tiller -b . -v -n -e production`
+    When I successfully run `tiller -b . --verbose -n -e production`
     Then a file named "template1.txt" should exist
     And the file "template1.txt" should contain:
     """
@@ -77,7 +77,7 @@ Feature: Consul plugin
     """
     test_var: <%= test_var %>
     """
-    When I successfully run `tiller -b . -v -n -e development`
+    When I successfully run `tiller -b . --verbose -n -e development`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """

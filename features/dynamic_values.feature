@@ -33,7 +33,7 @@ Feature: Dynamic configuration
     """
     dynamic_value: <%= dynamic_value %>
     """
-    When I successfully run `tiller -vd -b . -l ./lib`
+    When I successfully run `tiller --verbose -d -b . -l ./lib`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain "dynamic_value: Test string"
     And the output should contain "Dynamic values specified. Will parse all values as ERb."
@@ -63,7 +63,7 @@ Feature: Dynamic configuration
     """
     dynamic_value: <%= root_hash['nested_hash']['dynamic_value'] %>
     """
-    When I successfully run `tiller -vd -b . -l ./lib`
+    When I successfully run `tiller --verbose -d -b . -l ./lib`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain "dynamic_value: Test string"
     And the output should contain "Dynamic values specified. Will parse all values as ERb."
@@ -94,7 +94,7 @@ Feature: Dynamic configuration
     And I set the environment variables exactly to:
       | variable          | value       |
       | dynamic_value     | Test string |
-    When I successfully run `tiller -vd -b . -l ./lib`
+    When I successfully run `tiller --verbose -d -b . -l ./lib`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain "dynamic_value: Test string"
     And the output should contain "Dynamic values specified. Will parse all values as ERb."
@@ -126,7 +126,7 @@ Feature: Dynamic configuration
       | variable          | value       |
       | dynamic_value     | Test string |
       | dynamic_target    | dynamic.txt |
-    When I successfully run `tiller -vd -b . -l ./lib`
+    When I successfully run `tiller --verbose -d -b . -l ./lib`
     Then a file named "dynamic.txt" should exist
     And the file "dynamic.txt" should contain "dynamic_value: Test string"
     And the output should contain "Dynamic values specified. Will parse all values as ERb."

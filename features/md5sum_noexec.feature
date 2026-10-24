@@ -30,7 +30,7 @@ Feature: MD5 file checksums with noexec
     """
 
   Scenario: First pass
-    When I successfully run `tiller -b . -v -e development`
+    When I successfully run `tiller -b . --verbose -e development`
     Then a file named "test1.txt" should exist
     And the file "test1.txt" should contain:
     """

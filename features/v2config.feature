@@ -6,17 +6,17 @@ Feature: Tiller v2 config
 
   Scenario: Test for v2 message when debug passed
     Given I use a fixture named "single_file"
-    When I successfully run `tiller -b . -d -v -n`
+    When I successfully run `tiller -b . -d --verbose -n`
     Then the output should contain "Using common.yaml v2 format configuration file"
 
   Scenario: Test loading missing environment
     Given I use a fixture named "single_file"
-    When I run `tiller -b . -d -v -n -e parp`
+    When I run `tiller -b . -d --verbose -n -e parp`
     Then the output should contain "Error : Could not load environment parp from common.yaml"
 
   Scenario: Test with development environment
     Given I use a fixture named "single_file"
-    When I successfully run `tiller -b . -d -v -n`
+    When I successfully run `tiller -b . -d --verbose -n`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """

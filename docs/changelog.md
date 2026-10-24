@@ -6,6 +6,8 @@
     * `diplomat` is now a runtime dependency of the gem
     * `oj` is no longer used for JSON output, the standard `json` library is used instead
     * Ruby 3.4 support
+    * The startup banner (version, URL, email) is no longer printed. Use the new `-v` / `--version` flag to show the version
+    * BREAKING: `-v` now shows the version. Verbose output is only available as `--verbose`, there is no short flag for it anymore
 # 2.x
   * Ruby 3.3 support
   * removed zookeeper

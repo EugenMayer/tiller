@@ -5,7 +5,7 @@ Feature: Defaults module
 
   Scenario: Data from defaults.yaml
     Given I use a fixture named "defaults" 
-    When I successfully run `tiller -b . -v -e production -n`
+    When I successfully run `tiller -b . --verbose -e production -n`
     Then a file named "app.conf" should exist
     And the file "app.conf" should contain:
 """
@@ -22,7 +22,7 @@ db.host=prd-db-1.example.com
 
   Scenario: Override defaults
     Given I use a fixture named "defaults" 
-    When I successfully run `tiller -b . -v -e override -n`
+    When I successfully run `tiller -b . --verbose -e override -n`
     Then a file named "app.conf" should exist
     And the file "app.conf" should contain:
 """
@@ -39,7 +39,7 @@ db.host=stg-db-1.dev.example.com
 
   Scenario: Use defaults.d directory
     Given I use a fixture named "defaults"
-    When I successfully run `tiller -b . -v -e defaults_d -n`
+    When I successfully run `tiller -b . --verbose -e defaults_d -n`
     Then a file named "defaults_d.txt" should exist
     And the file "defaults_d.txt" should contain "This is a default from defaults.d"
 
@@ -50,7 +50,7 @@ db.host=stg-db-1.dev.example.com
 
   Scenario: Data from defaults.yaml
     Given I use a fixture named "defaults_targets"
-    When I successfully run `tiller -b . -v -e production -n`
+    When I successfully run `tiller -b . --verbose -e production -n`
     Then a file named "app.conf" should exist
     And a file named "target.txt" should exist
     And the file "app.conf" should contain:
@@ -68,7 +68,7 @@ db.host=prd-db-1.example.com
 
   Scenario: Override defaults
     Given I use a fixture named "defaults_targets"
-    When I successfully run `tiller -b . -v -e override -n`
+    When I successfully run `tiller -b . --verbose -e override -n`
     Then a file named "app.conf" should exist
     And a file named "target.txt" should exist
     And the file "app.conf" should contain:
@@ -86,7 +86,7 @@ db.host=stg-db-1.dev.example.com
 
   Scenario: Check that target.txt is created
    Given I use a fixture named "defaults_targets"
-   When I successfully run `tiller -b . -v -e production -n`
+   When I successfully run `tiller -b . --verbose -e production -n`
    Then a file named "target.txt" should exist
    And the file "target.txt" should contain "This is a value from defaults.yaml"
 
@@ -96,14 +96,14 @@ db.host=stg-db-1.dev.example.com
   # correct thing to bail out, in the interests of backwards-compatibility, we now instead log a warning and continue.
   Scenario: Check that empty defaults are handled
     Given I use a fixture named "empty_defaults"
-    When I successfully run `tiller -b . -v -e -n`
+    When I successfully run `tiller -b . --verbose -e -n`
     Then a file named "application.properties" should exist
     And the file "application.properties" should contain "app.text=This is application.properties"
 
 
   Scenario: Check that defaults can be loaded form a common: block in an environment
     Given I use a fixture named "common_defaults"
-    When I successfully run `tiller -b . -v -e -n`
+    When I successfully run `tiller -b . --verbose -e -n`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain "This is a global default : A global value"
 

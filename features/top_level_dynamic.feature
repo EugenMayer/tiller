@@ -43,7 +43,7 @@ Feature: Top level dynamic values
     And I set the environment variables exactly to:
       | variable          | value       |
       | test_value        | test.txt    |
-    When I successfully run `tiller -b . -l ./lib -dnv`
+    When I successfully run `tiller -b . -l ./lib -d -n --verbose`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """

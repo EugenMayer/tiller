@@ -18,7 +18,7 @@ Feature: Plugin API versioning
     environments:
       development: {}
     """
-    When I run `tiller -vd -b . -l ./lib`
+    When I run `tiller --verbose -d -b . -l ./lib`
     Then the output should contain "ERROR : Plugin VersioningTestPlugin does not support specified API version"
 
   Scenario: Test plugin with unsupported API set via CLI
@@ -30,7 +30,7 @@ Feature: Plugin API versioning
     environments:
       development: {}
     """
-    When I run `tiller -vd -b . -l ./lib --plugin-api-version 1000`
+    When I run `tiller --verbose -d -b . -l ./lib --plugin-api-version 1000`
     Then the output should contain "ERROR : Plugin EnvironmentDataSource does not support specified API version"
 
   Scenario: Test plugin with unsupported API set via config file
@@ -43,5 +43,5 @@ Feature: Plugin API versioning
     environments:
       development: {}
     """
-    When I run `tiller -vd -b . -l ./lib`
+    When I run `tiller --verbose -d -b . -l ./lib`
     Then the output should contain "ERROR : Plugin EnvironmentDataSource does not support specified API version"

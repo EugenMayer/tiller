@@ -28,7 +28,7 @@ Feature: Helper modules
     """
 
   Scenario: Generate template with module
-    When I successfully run `tiller -b . -l ./lib -v`
+    When I successfully run `tiller -b . -l ./lib --verbose`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """

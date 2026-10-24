@@ -5,7 +5,7 @@ Feature: File global values module
 
   Scenario: Globals from v1 development environment
     Given I use a fixture named "file_globals"
-    When I successfully run `tiller -b ./v1 -v -e development -n`
+    When I successfully run `tiller -b ./v1 --verbose -e development -n`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
 """
@@ -23,7 +23,7 @@ Per-environment global : This is the per-env global overwritten by the local val
 
   Scenario: Globals from v1 production environment
     Given I use a fixture named "file_globals"
-    When I successfully run `tiller -b ./v1 -v -e production -n`
+    When I successfully run `tiller -b ./v1 --verbose -e production -n`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
 """
@@ -36,7 +36,7 @@ Per-environment global : This is the default for the per-env global
 
   Scenario: Globals from v2 development environment
     Given I use a fixture named "file_globals"
-    When I successfully run `tiller -b ./v2 -v -e development -n`
+    When I successfully run `tiller -b ./v2 --verbose -e development -n`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
 """
@@ -54,7 +54,7 @@ Per-environment global : This is the per-env global overwritten by the local val
 
   Scenario: Globals from v2 production environment
     Given I use a fixture named "file_globals"
-    When I successfully run `tiller -b ./v2 -v -e production -n`
+    When I successfully run `tiller -b ./v2 --verbose -e production -n`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
 """

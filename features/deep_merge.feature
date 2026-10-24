@@ -28,7 +28,7 @@ Feature: Test deep merging behaviour
             test_var:
               key1: 'key1 from file'
     """
-    When I successfully run `tiller -b . -v -n`
+    When I successfully run `tiller -b . --verbose -n`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """
@@ -56,7 +56,7 @@ Feature: Test deep merging behaviour
             test_var:
               key1: 'key1 from file'
     """
-    When I successfully run `tiller -b . -v -n`
+    When I successfully run `tiller -b . --verbose -n`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """
@@ -86,7 +86,7 @@ Feature: Test deep merging behaviour
           target: test.txt
 
     """
-    When I successfully run `tiller -b . -v -n`
+    When I successfully run `tiller -b . --verbose -n`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """

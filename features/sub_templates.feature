@@ -33,7 +33,7 @@ Feature: Sub templates
     """
 
   Scenario: Generate sub-template
-    When I successfully run `tiller -b . -v -e development`
+    When I successfully run `tiller -b . --verbose -e development`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """

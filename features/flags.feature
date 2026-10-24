@@ -12,8 +12,16 @@ Feature: Command line arguments
     When I successfully run `tiller -h`
     Then the output should contain "Usage: tiller"
 
+  Scenario: Display version
+    When I successfully run `tiller -v`
+    Then the output should match:
+      """
+      ^tiller v\d+\.\d+\.\d+$
+      """
+    And the output should not contain "github"
+
   Scenario: Verbose mode
-    When I successfully run `tiller -d -v -h`
+    When I successfully run `tiller -d --verbose -h`
     Then the output should match:
       """
       :verbose=>true|verbose: true

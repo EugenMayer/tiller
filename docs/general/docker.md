@@ -10,16 +10,16 @@ RUN gem install tiller
 ...
 ... Rest of Dockerfile here
 ...
-CMD ["/usr/local/bin/tiller" , "-v"]
+CMD ["/usr/local/bin/tiller" , "--verbose"]
 ```
 
 Now, set up your configuration. By default, Tiller looks for configuration under `/etc/tiller`, but this can be set to somewhere else by setting the environment variable `tiller_base` or by using the `-b` flag. This is particularly useful for testing purposes, e.g.
 
-	$ tiller_base=/tmp/tiller tiller -v
+	$ tiller_base=/tmp/tiller tiller --verbose
 	
 or
 
-	$ tiller -v -b /tmp/tiller
+	$ tiller --verbose -b /tmp/tiller
 
 Tiller expects a directory structure like this (using /etc/tiller as its base, and the file data and template sources) :
 
@@ -43,7 +43,7 @@ RUN gem install tiller
 ... Rest of Dockerfile here
 ...
 ADD data/tiller /etc/tiller
-CMD ["/usr/local/bin/tiller" , "-v"]
+CMD ["/usr/local/bin/tiller" , "--verbose"]
 ```
 
 Note that the configuration directory was added later on in the Dockerfile; this is because `ADD` commands cause the Docker build cache to become invalidated so it's a good idea to put them as far as possible towards the end of the Dockerfile.

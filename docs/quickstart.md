@@ -56,7 +56,7 @@ db_hostname: mydb.example.com
 ** Further work **
 
  * Read the documentation for the [Environment plugin](plugins/environment.md) and set some of the parameters it provides such as `prefix` and `lowercase` and see how this changes your template. 
- * Try adding the `-d` and `-v` flags when you run Tiller (e.g. `tiller --base-dir=./quickstart -v`)to see how this provides extra information. 
+ * Try adding the `-d` and `--verbose` flags when you run Tiller (e.g. `tiller --base-dir=./quickstart --verbose`)to see how this provides extra information. 
 
 # Example 2 : Provide a default value
 
@@ -134,7 +134,7 @@ We then specify an empty "development" environment as we've specified everything
 If we run Tiller now in verbose mode:
 
 ```sh
-$ tiller --base-dir=./t/quickstart -v
+$ tiller --base-dir=./t/quickstart --verbose
 ```
 
 You'll see in the output the line `Using environment development`, which shows Tiller uses the `development` environment if you don't manually specify one. Therefore, your config file will again look like :

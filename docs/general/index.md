@@ -35,7 +35,7 @@ Of course, you can always use the old "one file for each environment" approach i
 Tiller understands the following *optional* command-line arguments (mostly used for debugging purposes) :
 
 * `-n` / `--no-exec` : Do not execute a child process (e.g. you only want to generate the templates)
-* `-v` / `--verbose` : Display verbose output, useful for debugging and for seeing what templates are being parsed
+* `--verbose` : Display verbose output, useful for debugging and for seeing what templates are being parsed
 * `-d` / `--debug` : Enable additional debug output
 * `-b` / `--base-dir` : Specify the tiller_base directory for configuration files
 * `-l` / `--lib-dir` : Specify the tiller_lib directory for user-provided plugins
@@ -44,6 +44,7 @@ Tiller understands the following *optional* command-line arguments (mostly used 
 * `-p` / `--api-port` : Set the port the API listens on (Default: 6275)
 * `-x` / `--exec` : Specify an alternate command to execute, overriding the exec: parameter from your config files
 * `-h` / `--help` : Show a short help screen
+* `-v` / `--version` : Show the Tiller version and exit
 * `--md5sum` : Only write templates if they do not already exist, or their content has changed (see [below](#checksums)). 
 * `--md5sum-noexec` : If no templates were written/updated, do not execute any  process.
 

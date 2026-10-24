@@ -25,7 +25,7 @@ Feature: Test new value precedence and merging behaviour
           target: test.txt
 
     """
-    When I successfully run `tiller -b . -v`
+    When I successfully run `tiller -b . --verbose`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """
@@ -50,7 +50,7 @@ Feature: Test new value precedence and merging behaviour
           config:
             test_var: "From file plugin"
     """
-    When I successfully run `tiller -b . -v`
+    When I successfully run `tiller -b . --verbose`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """
@@ -80,7 +80,7 @@ Feature: Test new value precedence and merging behaviour
     And I set the environment variables exactly to:
       | variable    | value              |
       | var         | from environment   |
-    When I successfully run `tiller -b . -v`
+    When I successfully run `tiller -b . --verbose`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """

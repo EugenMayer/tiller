@@ -5,33 +5,33 @@ You might find this particularly useful if you're using Docker, as you can ship 
 
 However, its use is not just limited to Docker; you may also find it useful as a sort of "proxy" that can provide values to application configuration files from a data source that the application does not natively support. 
 
-It's available as a [Ruby Gem](https://rubygems.org/gems/tiller), so installation should be a simple `gem install tiller`.
-
-[![Gem Version](https://badge.fury.io/rb/tiller.svg)](http://badge.fury.io/rb/tiller)
-[![Build Status](https://travis-ci.org/markround/tiller.svg?branch=develop)](https://travis-ci.org/markround/tiller)
-![](https://img.shields.io/gem/dt/tiller.svg)
- [![Join the chat at https://gitter.im/markround/tiller](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/markround/tiller)
-[![Documentation Status](https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat)](http://tiller.readthedocs.io/en/latest/)
-
 # Documentation
-The main documentation has been updated and a searchable, easy to read version is now hosted on [readthedocs.io](http://tiller.readthedocs.io/). You can also read the raw markdown files by browsing the [docs](docs/) directory in this repository.
+The documentation lives in the [docs](docs/) directory of this repository and is the only up-to-date source. The version hosted on readthedocs.io is outdated and does not match this fork, so please do not use it.
 
-You may like to read the [Quickstart](http://tiller.readthedocs.io/en/latest/quickstart/) guide if you want a very quick overview.
-
-There is also a [Gitter chatroom](https://gitter.im/markround/tiller) for you to ask any questions, suggest new features and talk to other users.
+A good place to start is the [Quickstart](docs/quickstart.md) guide.
 
 # Tests
 
 ```bash
 bundle exec rake
 ```
-# Status
+# Since 2026
 
-Please see the status of the original project under https://github.com/markround/tiller#status
+This fork has been stripped down to make it easier to maintain and keep secure. Everything that is not needed was removed, which reduces the code to maintain and the dependencies to keep up to date.
 
-Currently, iam trying to keep the fork alive by patching ruby compatibility and bugs that cause issues for us. 
-Happy to review PR's for bug-fixes, feature-requests or PRs for features are most likely to never get merged. This fork
-is considered to be the bare minimum effort to keep it alive and stable.
+What is left:
+
+* Data sources: `defaults`, `file`, `consul` and `environment`
+* Template sources: `file`
+* Helper modules, the HTTP API, checksums, `exec_on_write` and the other core features
+
+Removed are all the other data and template sources (Vault, Ansible Vault, HTTP, random, XML, external files, JSON/nested environment, Consul templates, regex and reusable templates). Configurations that still reference them fail to load, see the [changelog](docs/changelog.md) for details.
+
+Also note that `-v` now shows the version. Verbose output is available as `--verbose` only.
+
+Bug-fix PRs are welcome. PRs that add features, data sources or template sources are unlikely to be merged.
+
+For the history of the original project, see https://github.com/markround/tiller.
 
 # Credits 
 

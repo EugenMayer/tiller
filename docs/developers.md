@@ -127,12 +127,12 @@ template_sources:
 If you don't want to use the default directory of `/usr/local/lib/tiller`, you can specify an alternate location by setting the `tiller_lib` environment variable, or by using the `-l`/`--libdir` flag on the command line.
 
 ## Logging
-There is a class logger available via `Tiller::log`. The verbosity is set to WARN by default but can be set to `INFO` when Tiller is called with the `-v` flag, and `DEBUG` when the `-d` flag is used. EG:
+There is a class logger available via `Tiller::log`. The verbosity is set to WARN by default but can be set to `INFO` when Tiller is called with the `--verbose` flag, and `DEBUG` when the `-d` flag is used. EG:
 
 ```ruby
 class ExampleDataSource < Tiller::DataSource
   def setup
-    Tiller::log.info('You will see this if you have run tiller with the -v flag')
+    Tiller::log.info('You will see this if you have run tiller with the --verbose flag')
     Tiller::log.debug('You will only see this if you have run tiller with the -d flag')
   end 
   ...
@@ -209,7 +209,7 @@ Now, in your templates you can call this function like so:
 This is some place-holder content : <%= Tiller::LoremIpsum.words(10) %>
 ```
 
-When you run Tiller with the `-v` (verbose) flag, you'll see `Helper modules loaded ["lorem_ipsum"]` amongst the output, and your template will contain the following text when generated :
+When you run Tiller with the `--verbose` flag, you'll see `Helper modules loaded ["lorem_ipsum"]` amongst the output, and your template will contain the following text when generated :
 
 ```
 This is some place-holder content : lorem ipsum dolor sit amet consectetuer adipiscing elit proin risus

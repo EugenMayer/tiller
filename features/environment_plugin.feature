@@ -9,7 +9,7 @@ Feature: Tiller environment plugin
     Given I set the environment variables exactly to:
       | variable    | value           |
       | test        | Hello, World!   |
-    When I successfully run `tiller -b . -v -n`
+    When I successfully run `tiller -b . --verbose -n`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain "Hello, World!"
 
@@ -18,7 +18,7 @@ Feature: Tiller environment plugin
     Given I set the environment variables exactly to:
       | variable    | value           |
       | test        | Hello, World!   |
-    When I successfully run `tiller -b . -v -n -e local_override`
+    When I successfully run `tiller -b . --verbose -n -e local_override`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain "Hello, World!"
     And the output should contain "env_test => 'This value will be overwritten' being replaced by : 'Hello, World!' from EnvironmentDataSource"
@@ -45,7 +45,7 @@ Feature: Tiller environment plugin
     And I set the environment variables exactly to:
       | variable    | value           |
       | VAR         | Hello, World!   |
-    When I successfully run `tiller -b . -v -n`
+    When I successfully run `tiller -b . --verbose -n`
     Then a file named "test1.txt" should exist
     And the file "test1.txt" should contain "foo_var: Hello, World!"
 
@@ -72,7 +72,7 @@ Feature: Tiller environment plugin
     And I set the environment variables exactly to:
       | variable    | value           |
       | VAR         | Hello, World!   |
-    When I successfully run `tiller -b . -v -n`
+    When I successfully run `tiller -b . --verbose -n`
     Then a file named "test1.txt" should exist
     And the file "test1.txt" should contain "foo_var: Hello, World!"
 
@@ -98,6 +98,6 @@ Feature: Tiller environment plugin
     And I set the environment variables exactly to:
       | variable    | value           |
       | VAR         | Hello, World!   |
-    When I successfully run `tiller -b . -v -n`
+    When I successfully run `tiller -b . --verbose -n`
     Then a file named "test1.txt" should exist
     And the file "test1.txt" should contain "var: Hello, World!"

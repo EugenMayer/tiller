@@ -21,7 +21,7 @@ Feature: Exec on write
     """
     value: <%= value %>
     """
-    When I run `tiller -vd -b . -l ./lib`
+    When I run `tiller --verbose -d -b . -l ./lib`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain "value: exec_on_write feature"
     And the output should match /Warning: exec_on_write for template (.+) is not in array format/
@@ -47,7 +47,7 @@ Feature: Exec on write
     """
     value: <%= value %>
     """
-    When I successfully run `tiller -vd -b . -l ./lib`
+    When I successfully run `tiller --verbose -d -b . -l ./lib`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain "value: exec_on_write feature"
     And a file named "exec_on_write.tmp" should exist
@@ -81,7 +81,7 @@ Feature: Exec on write
     """
     value: exec_on_write feature
     """
-    When I successfully run `tiller -vd -b . -l ./lib`
+    When I successfully run `tiller --verbose -d -b . -l ./lib`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain "value: exec_on_write feature"
     And the output should contain "[0/1] templates written, [1] skipped with no change"
@@ -110,7 +110,7 @@ Scenario: Test exec_on_write twice
     """
     value: <%= value %>
     """
-    When I successfully run `tiller -vd -b . -l ./lib`
+    When I successfully run `tiller --verbose -d -b . -l ./lib`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain "value: exec_on_write feature"
     And the output should contain "[1/1] templates written, [0] skipped with no change"
@@ -134,7 +134,7 @@ Scenario: Test exec_on_write twice
             value: exec_on_write feature
     """
 
-    When I successfully run `tiller -vd -b . -l ./lib`
+    When I successfully run `tiller --verbose -d -b . -l ./lib`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain "value: exec_on_write feature"
     And the output should contain "[0/1] templates written, [1] skipped with no change"
@@ -161,7 +161,7 @@ Scenario: Test exec_on_write twice
     """
     value: <%= value %>
     """
-    When I successfully run `tiller -vd -b . -l ./lib -n`
+    When I successfully run `tiller --verbose -d -b . -l ./lib -n`
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain "value: exec_on_write feature"
     And a file named "exec_on_write.tmp" should not exist

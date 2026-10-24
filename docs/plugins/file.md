@@ -1,6 +1,6 @@
 # File plugins
 
-These plugins are usually required and should be enabled unless you are providing *all* other configuration and templates through a plugin such as [consul](consul.md) or [zookeeper](zookeeper.md). This is because Tiller uses the File plugins to parse much of the `common.yaml` configuration, and read .erb templates from the filesystem.
+These plugins are usually required and should be enabled unless you are providing *all* other configuration and templates through another data source such as [consul](consul.md). This is because Tiller uses the File plugins to parse much of the `common.yaml` configuration, and read .erb templates from the filesystem.
 
 ## Template source plugin
 
@@ -58,16 +58,10 @@ environments:
 
 	development:
 		
-		# Only enable API for development environment, and
-		# also specify HTTP plugin values	
+		# Only enable API for development environment
 		common:
 		  api_enable: true
 		  api_port: 1234
-		  
-		  # configuration for HTTP plugin (https://github.com/markround/tiller/blob/master/README-HTTP.md)
-		  http:
-		    uri: 'http://tiller.dev.example.com'
-		    ...
 		    ...
 		    ... rest of config file snipped
 		    ...

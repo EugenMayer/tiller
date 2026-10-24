@@ -1,4 +1,0 @@
-simple_keys.erb:
-  target: simple_keys.txt
-  config:
-    default_value: 'From the file datasource'

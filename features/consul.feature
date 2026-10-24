@@ -63,7 +63,7 @@ Feature: Consul plugin
     ---
     exec: ["true"]
     data_sources: [ "consul" , "file" ]
-    template_sources: [ "consul" , "file" ]
+    template_sources: [ "file" ]
 
     environments:
       development:

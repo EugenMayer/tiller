@@ -8,7 +8,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [3.3]
+        ruby: ["3.3", "3.4"]
     steps:
       - uses: actions/checkout@v6
       - name: Set up Ruby
@@ -17,10 +17,6 @@ jobs:
           bundler: default
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: false
-#      - name: Install vault
-#        run: |
-#          wget -O /tmp/vault.zip https://releases.hashicorp.com/vault/1.14.0/vault_1.14.0_linux_amd64.zip
-#          cd /usr/local/bin/ && unzip /tmp/vault.zip
 #      - name: Install consul
 #        run: |
 #          wget -O /tmp/consul.zip https://releases.hashicorp.com/consul/1.16.0/consul_1.16.0_linux_amd64.zip

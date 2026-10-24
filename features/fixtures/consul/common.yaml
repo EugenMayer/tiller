@@ -1,7 +1,7 @@
 ---
 exec: ["date"]
 data_sources: ["consul"]
-template_sources: [ "consul" ]
+template_sources: [ "file" ]
 
 consul:
   url: "http://127.0.0.1:8500"

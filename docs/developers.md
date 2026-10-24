@@ -119,7 +119,6 @@ Assuming you had created a pair of template and data source plugins called `Exam
 data_sources:
   - file
   - example
-  - random
 template_sources:
   - file
   - example

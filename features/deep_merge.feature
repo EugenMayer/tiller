@@ -3,7 +3,7 @@ Feature: Test deep merging behaviour
     Given a directory named "templates"
     And a file named "templates/test.erb" with:
     """
-    test_var: <%= test_var %>
+    test_var: <%= test_var.to_json %>
     """
 
 
@@ -32,7 +32,7 @@ Feature: Test deep merging behaviour
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """
-    test_var: {"key1"=>"key1 from file"}
+    test_var: {"key1":"key1 from file"}
     """
   Scenario: Test with deep merge
     Given a file named "common.yaml" with:
@@ -60,7 +60,7 @@ Feature: Test deep merging behaviour
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """
-    test_var: {"key1"=>"key1 from file", "key2"=>"key2 from defaults"}
+    test_var: {"key1":"key1 from file","key2":"key2 from defaults"}
     """
 
   Scenario: Test globals deep merge
@@ -90,5 +90,5 @@ Feature: Test deep merging behaviour
     Then a file named "test.txt" should exist
     And the file "test.txt" should contain:
     """
-    test_var: {"key1"=>"key1 from file", "key2"=>"key2 from defaults"}
+    test_var: {"key1":"key1 from file","key2":"key2 from defaults"}
     """

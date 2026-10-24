@@ -14,43 +14,49 @@ Feature: Command line arguments
 
   Scenario: Verbose mode
     When I successfully run `tiller -d -v -h`
-    Then the output should contain ":verbose=>true"
+    Then the output should match:
+      """
+      :verbose=>true|verbose: true
+      """
 
   Scenario: Debug mode
     When I successfully run `tiller -d -h`
-    Then the output should contain ":debug=>true"
+    Then the output should match:
+      """
+      :debug=>true|debug: true
+      """
 
   Scenario:API enable
     When I successfully run `tiller -d -a -h`
-    Then the output should contain:
-        """
-        "api_enable"=>true
-        """ 
+    Then the output should match:
+      """
+      "api_enable"\s*=>\s*true
+      """
 
   Scenario: Change API port
     When I successfully run `tiller -d -a -p 1234 -h`
-    Then the output should contain:
-        """
-        "api_port"=>"1234"
-        """
+    Then the output should match:
+      """
+      "api_port"\s*=>\s*"1234"
+      """
 
   Scenario: Set environment
     When I run `tiller -d -e test -h`
-    Then the output should contain:
-    """
-    :environment=>"test"
-    """
+    Then the output should match:
+      """
+      :environment=>"test"|environment: "test"
+      """
 
   Scenario: Enable md5 checks
   When I run `tiller -d --md5sum -h`
-  Then the output should contain:
+  Then the output should match:
     """
-    "md5sum"=>true
+    "md5sum"\s*=>\s*true
     """
 
   Scenario: Enable md5 noexec
     When I run `tiller -d --md5sum-noexec -h`
-    Then the output should contain:
-    """
-    "md5sum_noexec"=>true
-    """
+    Then the output should match:
+      """
+      "md5sum_noexec"\s*=>\s*true
+      """

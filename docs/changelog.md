@@ -1,3 +1,11 @@
+# 3.x
+  * 3.0.0 (24/Oct/2026)
+    * BREAKING: stripped down to the `defaults`, `file`, `consul` and `environment` data sources and the `file` template source
+    * BREAKING: removed the `vault`, `ansible_vault`, `http`, `random`, `xml_file`, `external_file`, `environment_json` and `environment_nested` data sources
+    * BREAKING: removed the `consul`, `vault`, `http`, `regex` and `reusable` template sources. Templates are now only read from files
+    * `diplomat` is now a runtime dependency of the gem
+    * `oj` is no longer used for JSON output, the standard `json` library is used instead
+    * Ruby 3.4 support
 # 2.x
   * Ruby 3.3 support
   * removed zookeeper

@@ -1,18 +1,11 @@
-# Consul plugins
+# Consul plugin
 
-As of version 0.7.8, Tiller includes plugins to retrieve templates, values, services and nodes from a [Consul](https://www.consul.io/) cluster. These plugins rely on the `diplomat` gem to be present, so before proceeding ensure you have run `gem install diplomat` in your environment. This is not listed as a hard dependency of Tiller, as this would force the gem to be installed even on systems that would never use these plugins.
+Tiller includes a data source plugin to retrieve values, services and nodes from a [Consul](https://www.consul.io/) cluster. It relies on the `diplomat` gem, which is installed as a dependency of Tiller.
 
-# Enabling the plugins
-Add the `consul` plugins in your `common.yaml`, e.g.
+Templates are always read from files (see the [file plugin](file.md)); there is no Consul template source.
 
-```yaml
-data_sources: [ "consul" ]
-template_sources: [ "consul" ]
-```
-
-If you're fetching all your values and templates from Consul, those should be the only plugins you need.
-
-However, you do not need to enable both plugins; for example you may just want to retrieve values for your templates from consul, but continue to use files to store your actual template content. For example :
+# Enabling the plugin
+Add the `consul` data source in your `common.yaml`, e.g.
 
 ```yaml
 data_sources: [ "consul", "environment" ]
@@ -35,7 +28,6 @@ consul:
   register_services: false
   register_nodes: false
 
-  templates: '/tiller/templates'
   values:
     global: '/tiller/globals/all'
     per_env: '/tiller/globals/%e'
@@ -43,11 +35,11 @@ consul:
     target: '/tiller/target_values/%t/%e'
 ```
 
-At a bare minimum, you need to specify a URL for the plugins to connect to. This is the HTTP port of your Consul server, e.g. `http://localhost:8500`. If you omit the other parameters, they will default to the values shown above. If you're happy to accept the rest of the defaults, your configuration can therefore be as simple as this :
+At a bare minimum, you need to specify a URL for the plugin to connect to. This is the HTTP port of your Consul server, e.g. `http://localhost:8500`. If you omit the other parameters, they will default to the values shown above. If you're happy to accept the rest of the defaults, your configuration can therefore be as simple as this :
 
 ```yaml
 data_sources: [ "consul" ]
-template_sources: [ "consul" ]
+template_sources: [ "file" ]
 consul:
   url: 'http://localhost:8500'
 ```
@@ -73,11 +65,6 @@ You can use any K/V hierarchy inside Consul, but the default is expected to look
 	 │   │   └── some_key_only_for_production_environment
 	 │   │
 	 │   ... more environments here...
-	 │
-	 ├── templates (each key contains the ERB template as its value)
-	 │   ├── template1.erb
-	 │   ├── template2.erb
-	 │   ... more templates here ...
 	 │
 	 ├── values
 	 │   ├── production (keys and values for the 'production' environment)
@@ -112,7 +99,7 @@ You can use any K/V hierarchy inside Consul, but the default is expected to look
 
 
 
-You can change this to any structure you like by altering the `templates` and `values` parameters. The paths specified for any of these parameters listed above may include the following placeholders :
+You can change this to any structure you like by altering the `values` parameters. The paths specified for any of these parameters listed above may include the following placeholders :
 
 * `%e` : This will be replaced with the value of the current environment
 * `%t` : This will be replaced with the value of the current template
@@ -135,7 +122,7 @@ To make the list of nodes registered with Consul available to your templates, se
 
 ```yaml
 data_sources: [ "consul" ]
-template_sources: [ "consul" ]
+template_sources: [ "file" ]
 consul:
   url: 'http://localhost:8500'
   register_nodes: true
@@ -161,7 +148,7 @@ To make the list of services registered with Consul available to your templates,
 
 ```yaml
 data_sources: [ "consul" ]
-template_sources: [ "consul" ]
+template_sources: [ "file" ]
 consul:
   url: 'http://localhost:8500'
   register_services: true

@@ -18,43 +18,6 @@ module Tiller
   }
 end
 
-
-# Defaults for the Vault data and template sources
-module Tiller::Vault
-  Defaults = {
-    'timeout'       => 30,
-    'ssl_verify'    => false,
-    'templates'     => '/secret/tiller/templates',
-    'json_key_name' => :content,
-
-    'values'    => {
-        'global'    => '/secret/tiller/globals/all',
-        'per_env'   => '/secret/tiller/globals/%e',
-        'template'  => '/secret/tiller/values/%e/%t',
-        'target'    => '/secret/tiller/target_values/%t/%e'
-    }
-  }
-end
-
-# Defaults for the HTTP data and template sources
-module Tiller::Http
-  def self.defaults
-    {
-      'timeout'   => 5,
-      'proxy'     => '',
-      'templates' => '/tiller/environments/%e/templates',
-      'template_content' => '/tiller/templates/%t/content',
-      'parser'    => 'json',
-
-      'values'    => {
-          'global'    => '/tiller/globals',
-          'template'  => '/tiller/templates/%t/values/%e',
-          'target'    => '/tiller/templates/%t/target_values/%e'
-      }
-    }
-  end
-end
-
 module Tiller::Consul
   def self.defaults
     {
@@ -62,8 +25,6 @@ module Tiller::Consul
       'acl_token'         => nil,
       'register_services' => false,
       'register_nodes'    => false,
-
-      'templates' => '/tiller/templates',
 
       'values'    => {
           'global'    => '/tiller/globals/all',
@@ -80,14 +41,6 @@ module Tiller::Environment
     {
         'prefix'    => 'env_',
         'lowercase' => true
-    }
-  end
-end
-
-module Tiller::AnsibleVault
-  def self.defaults
-    {
-        'vault_password_env'  => 'ANSIBLE_VAULT_PASS'
     }
   end
 end

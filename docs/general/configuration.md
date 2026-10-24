@@ -42,11 +42,11 @@ This parameter specifies which plugin will be providing the templates. It uses t
 template_sources: [ "file" ]
 ```
   
-** IMPORTANT NOTE ** : The order in which you specify plugins is important. Plugins will be loaded in the order they are specified, so in the following example, values from the environment will take precedence over anything specified in `common.yaml` from the [file](../plugins/file.md) plugin, and templates from [Consul](../plugins/consul.md) will take precedence over anything from the filesystem:
+** IMPORTANT NOTE ** : The order in which you specify plugins is important. Plugins will be loaded in the order they are specified, so in the following example, values from the environment will take precedence over anything specified in `common.yaml` from the [file](../plugins/file.md) plugin,:
 
 ```yaml
 data_sources: [ "file" , "environment" ]
-template_sources: [ "file" , "consul" ]
+template_sources: [ "file" ]
 ```
 
 

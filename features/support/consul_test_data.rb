@@ -8,20 +8,6 @@ def populate_consul_test_data(url="http://127.0.0.1:8500")
     config.url = url
   end
 
-  # Template contents
-  template1 = %{This is template1.
-This is a value from Consul : <%= consul_value %>
-This is a global value from Consul : <%= consul_global %>
-This is a per-environment global : <%= consul_per_env %>
-If we have enabled node and service registration, these follow.
-Nodes : <%= consul_nodes %>
-Services : <%= consul_services %>}
-
-  template2 = %{This is template2.
-This is a value from Consul : <%= consul_value %>
-This is a global value from Consul : <%= consul_global %>
-This is a per-environment global : <%= consul_per_env %>}
-
   # Populate globals
   Diplomat::Kv.put('tiller/globals/all/consul_global', 'consul global value')
   # Populate per-environment globals
@@ -39,9 +25,6 @@ This is a per-environment global : <%= consul_per_env %>}
   Diplomat::Kv.put('tiller/target_values/template2.erb/development/target', 'template2.txt')
   # No template 2 for production
   Diplomat::Kv.put('tiller/target_values/template1.erb/production/target', 'template1.txt')
-  # Populate templates content
-  Diplomat::Kv.put('tiller/templates/template1.erb', template1)
-  Diplomat::Kv.put('tiller/templates/template2.erb', template2)
 end
 
 if ! defined?(Cucumber)

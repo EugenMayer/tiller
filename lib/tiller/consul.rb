@@ -14,6 +14,8 @@ module Tiller::ConsulCommon
       return
     end
     @consul_config.deep_merge!(Tiller::config['consul'])
+    # The token can also come from the environment, so it does not have to be written to a configuration file
+    @consul_config['acl_token'] ||= ENV['CONSUL_HTTP_TOKEN']
 
     # Sanity check
     ['url'].each {|c| raise "Consul: Missing Consul configuration #{c}" unless @consul_config.has_key?(c)}
@@ -25,6 +27,9 @@ module Tiller::ConsulCommon
 
       if @consul_config['acl_token']
         Tiller::log.debug("#{self} : Using Consul ACL token")
+        if @consul_config['url'].to_s.start_with?('http://')
+          Tiller::log.warn("#{self} : The Consul ACL token is sent unencrypted, use an https URL")
+        end
         config.acl_token = @consul_config['acl_token']
       end
     end

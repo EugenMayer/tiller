@@ -8,11 +8,11 @@ Templates are always read from files (see the [file plugin](file.md)); there is 
 Add the `consul` data source in your `common.yaml`, e.g.
 
 ```yaml
-data_sources: [ "consul", "environment" ]
+data_sources: [ "file", "consul", "environment" ]
 template_sources: [ "file" ]
 ```
 
-The above example would use templates from files, and retrieve values from Consul first, then try the `environment` plugin.
+The above example would use templates from files, and retrieve values from Consul after the `file` plugin, then try the `environment` plugin. You need the `file` (or `defaults`) data source, as it provides the `target` of each template: Consul only provides values.
 
 
 # Configuring
@@ -32,13 +32,12 @@ consul:
     global: '/tiller/globals/all'
     per_env: '/tiller/globals/%e'
     template: '/tiller/values/%e/%t'
-    target: '/tiller/target_values/%t/%e'
 ```
 
 At a bare minimum, you need to specify a URL for the plugin to connect to. This is the HTTP port of your Consul server, e.g. `http://localhost:8500`. If you omit the other parameters, they will default to the values shown above. If you're happy to accept the rest of the defaults, your configuration can therefore be as simple as this :
 
 ```yaml
-data_sources: [ "consul" ]
+data_sources: [ "file", "consul" ]
 template_sources: [ "file" ]
 consul:
   url: 'http://localhost:8500'
@@ -49,9 +48,13 @@ If the Consul cluster you are connecting to requires a token, you can include `a
 
 ```yaml
 consul:
-  url: 'http://localhost:8500'
+  url: 'https://consul.example.com:8501'
   acl_token: '11210C70-B257-4534-9655-E7D8A2C1E660'
 ```
+
+If you don't set `acl_token`, the `CONSUL_HTTP_TOKEN` environment variable is used. This keeps the token out of your configuration files. The token is never written to the logs.
+
+Use an `https` URL when you use a token. With a plain `http` URL the token and all values are sent unencrypted, and Tiller logs a warning.
 
 # Paths
 You can use any K/V hierarchy inside Consul, but the default is expected to look like the following:
@@ -84,18 +87,6 @@ You can use any K/V hierarchy inside Consul, but the default is expected to look
 	 │           │     ├── some_key
 	 │           │     ├── some_other_key
      │           ...more templates and keys...
- 	 │
- 	 │
-     └── target_values (controls which templates get installed and where)
-	     ├── template1.erb
-	     │   ├── production
-	     │   │       └── target (where to install the template in production)
-	     │   └── development
-	     │           └── target (where to install the template in development)
-	     │
-	     └── template1.erb (don't install template2.erb in development)
-	         └── production
-	                 └── target (where to install the template in production)
 
 
 
@@ -121,7 +112,7 @@ This should only be present in production : <%= some_key_only_for_production_env
 To make the list of nodes registered with Consul available to your templates, set `register_nodes` to true in your `common.yaml` :
 
 ```yaml
-data_sources: [ "consul" ]
+data_sources: [ "file", "consul" ]
 template_sources: [ "file" ]
 consul:
   url: 'http://localhost:8500'
@@ -147,7 +138,7 @@ This is a list of all nodes :
 To make the list of services registered with Consul available to your templates, set `register_services` to true in your `common.yaml` :
 
 ```yaml
-data_sources: [ "consul" ]
+data_sources: [ "file", "consul" ]
 template_sources: [ "file" ]
 consul:
   url: 'http://localhost:8500'
@@ -166,3 +157,8 @@ ServicePort : <%= consul_services['consul'][0].ServicePort %>
 # Further reading
 See [this](http://www.markround.com/blog/2016/05/12/new-consul-plugin-for-tiller) blog post for a walk-through tutorial with some examples.
 
+# Security
+The values in Consul are not trusted more than they have to be:
+
+* Consul only provides values. Where a template is written to (`target`), its owner and permissions, and `exec_on_write` always come from your configuration files (see the [file plugin](file.md) and the [defaults plugin](defaults.md)), never from Consul.
+* ERb syntax in Consul values is not evaluated when you use [dynamic values](../advanced/dynamic.md).

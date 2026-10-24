@@ -1,9 +1,19 @@
 ---
 exec: ["date"]
-data_sources: ["consul"]
+data_sources: ["file", "consul"]
 template_sources: [ "file" ]
 
 consul:
   url: "http://127.0.0.1:8500"
   register_services: true
   register_nodes: true
+
+environments:
+  development:
+    template1.erb:
+      target: template1.txt
+    template2.erb:
+      target: template2.txt
+  production:
+    template1.erb:
+      target: template1.txt

@@ -34,20 +34,6 @@ Feature: Command line arguments
       :debug=>true|debug: true
       """
 
-  Scenario:API enable
-    When I successfully run `tiller -d -a -h`
-    Then the output should match:
-      """
-      "api_enable"\s*=>\s*true
-      """
-
-  Scenario: Change API port
-    When I successfully run `tiller -d -a -p 1234 -h`
-    Then the output should match:
-      """
-      "api_port"\s*=>\s*"1234"
-      """
-
   Scenario: Set environment
     When I run `tiller -d -e test -h`
     Then the output should match:

@@ -5,6 +5,8 @@ require 'tiller/datasource'
 # Defaults datasource for Tiller.
 
 class DefaultsDataSource < Tiller::DataSource
+  @trusted_values = true
+
   def setup
     defaults_file = File.join(Tiller::config[:tiller_base], 'defaults.yaml')
     defaults_dir  = File.join(Tiller::config[:tiller_base], 'defaults.d')
@@ -18,7 +20,7 @@ class DefaultsDataSource < Tiller::DataSource
       # Read defaults in from defaults file if no v2 config
       # Handle empty files - if YAML didn't parse, it returns false so we skip them
       if File.file? defaults_file
-        yaml = YAML.load(open(defaults_file))
+        yaml = load_yaml_file(defaults_file)
         @defaults_hash.deep_merge!(yaml) if yaml != false
       end
     end
@@ -27,7 +29,7 @@ class DefaultsDataSource < Tiller::DataSource
     # We do this even if the main defaults were loaded from the v2 format config
     if File.directory? defaults_dir
       Dir.glob(File.join(defaults_dir,'*.yaml')).sort().each do |d|
-        yaml = YAML.load(open(d))
+        yaml = load_yaml_file(d)
         Tiller::log.debug("Loading defaults from #{d}")
         @defaults_hash.deep_merge!(yaml) if yaml != false
       end

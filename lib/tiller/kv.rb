@@ -8,7 +8,7 @@ module Tiller
     def self.set(path, value, options={})
       ns = options[:namespace] || 'tiller'
       hash = path.sub(/^\//, '').split('/').reverse.inject(value) { |h, s|  {s => h}  }
-      Tiller::log.debug("#{self} : Setting [#{ns}]#{path} = #{value}")
+      Tiller::log.debug("#{self} : Setting [#{ns}]#{path} = #{Tiller::Redact.value(path.split('/').last, value)}")
       @@kv[ns]=hash
     end
 

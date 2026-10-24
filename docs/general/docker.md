@@ -6,7 +6,7 @@ Firstly install the Tiller gem from the release asset (it is not published on ru
 
 ```dockerfile
 FROM ruby
-ARG TILLER_VERSION=3.0.2
+ARG TILLER_VERSION=3.1.0
 RUN curl -fsSL -o /tmp/tiller.gem https://github.com/EugenMayer/tiller/releases/download/${TILLER_VERSION}/tiller-${TILLER_VERSION}.gem && gem install /tmp/tiller.gem && rm /tmp/tiller.gem
 ...
 ... Rest of Dockerfile here
@@ -39,7 +39,7 @@ It is suggested that you add all this under your Docker definition in a `data/ti
 
 ```dockerfile
 FROM ruby
-ARG TILLER_VERSION=3.0.2
+ARG TILLER_VERSION=3.1.0
 RUN curl -fsSL -o /tmp/tiller.gem https://github.com/EugenMayer/tiller/releases/download/${TILLER_VERSION}/tiller-${TILLER_VERSION}.gem && gem install /tmp/tiller.gem && rm /tmp/tiller.gem
 ...
 ... Rest of Dockerfile here
@@ -66,7 +66,7 @@ RUN yum -y update && \
 RUN curl -sSL https://rvm.io/mpapis.asc | gpg2 --import -
 RUN curl -L get.rvm.io | bash -s stable
 
-ARG TILLER_VERSION=3.0.2
+ARG TILLER_VERSION=3.1.0
 # Install Tiller through RVM
 RUN /bin/bash -l -c "rvm install 2.4.0 && \
         gem install bundler --no-ri --no-rdoc && \
@@ -104,7 +104,7 @@ RUN git clone https://github.com/rbenv/rbenv.git /usr/local/rbenv && \
     mkdir /usr/local/rbenv/plugins && \
     git clone https://github.com/sstephenson/ruby-build.git /usr/local/rbenv/plugins/ruby-build
 
-ARG TILLER_VERSION=3.0.2
+ARG TILLER_VERSION=3.1.0
 # Install Ruby 2.3 and Tiller through RVM
 RUN bash -l -c "rbenv install 2.3.1 && \
     rbenv global 2.3.1 && \

@@ -1,6 +1,14 @@
 require 'tiller/templatesource'
 require 'tiller/datasource'
 
+# Names of plugins and helpers end up in a require, so they can only be plain names
+def check_plugin_name(name)
+  unless name.to_s =~ /\A[A-Za-z0-9_]+\z/
+    Tiller::log.fatal("ERROR : Invalid plugin name '#{name}', only letters, numbers and underscores are allowed")
+    exit(EXIT_FAIL)
+  end
+end
+
 def loader(type,sources)
   case type.to_s
     when 'Tiller::DataSource'
@@ -21,6 +29,7 @@ def loader(type,sources)
 
   classes = []
   sources.each do |s|
+    check_plugin_name(s)
     require File.join(source_path,"#{s}.rb")
     classes |= type.subclasses
   end
@@ -44,6 +53,7 @@ def helper_loader(helpers)
   loaded = []
 
   helpers.each do |h|
+    check_plugin_name(h)
     require File.join(source_path,"#{h}.rb")
     loaded.push(h)
   end

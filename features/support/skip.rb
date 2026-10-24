@@ -26,3 +26,12 @@ Around('@ruby2') do |scenario, block|
     block.call
   end
 end
+
+# Only run when the tests run as root, e.g. for setting ownership and permissions
+Around('@root') do |scenario, block|
+  if Process::Sys.geteuid == 0
+    block.call
+  else
+    skip_this_scenario
+  end
+end

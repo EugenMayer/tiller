@@ -5,8 +5,8 @@
 3. Tag the commit with the version (no `v` prefix) and push the tag:
 
 ```
-git tag 3.0.2
-git push origin 3.0.2
+git tag 3.1.0
+git push origin 3.1.0
 ```
 
 The `Release` workflow then checks that the tag matches `VERSION`, builds `tiller-<version>.gem` and attaches it to a new GitHub release.

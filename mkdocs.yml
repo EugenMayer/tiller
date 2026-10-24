@@ -17,7 +17,6 @@ pages:
   - Nested Templates: 'advanced/subtemplates.md'
   - Dynamic Values: 'advanced/dynamic.md'
   - Separate Config Files: 'advanced/separate_config.md'
-  - HTTP API: 'advanced/api.md'
   - Exec On Write: 'advanced/exec_on_write.md'
 - Common Issues: 'general/faq.md'
 - Plugins:

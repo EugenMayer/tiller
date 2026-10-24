@@ -9,12 +9,6 @@ def parse_options(config)
     opts.on('-d', '--debug', 'Display debug output') do
       config[:debug] = true
     end
-    opts.on('-a', '--api', 'Enable HTTP API') do
-      config['api_enable'] = true
-    end
-    opts.on('-p', '--api-port [API_PORT]', 'HTTP API port') do |api_port|
-      config['api_port'] = api_port
-    end
     opts.on('-b', '--base-dir [BASE_DIR]', 'Override the tiller_base environment variable') do |base_dir|
       config[:tiller_base] = base_dir
     end

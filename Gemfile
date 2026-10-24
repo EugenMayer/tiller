@@ -4,6 +4,7 @@ group :development do
   gem 'json' , '~> 3.1.0'
   gem 'rake'
   gem 'rspec'
+  gem 'bundler-audit'
   gem 'aruba', '~> 2.4.0'
   gem 'cucumber', '~> 10.0'
   gem 'tiller', :path => '.'

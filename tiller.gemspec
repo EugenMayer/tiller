@@ -9,20 +9,13 @@ Gem::Specification.new do |s|
   s.authors = ['Mark Dastmalchi-Round', 'Eugen Mayer']
   s.email = 'github@markround.com'
   s.files = %w(
-    lib/tiller/api.rb
-    lib/tiller/api/handlers/404.rb
-    lib/tiller/api/handlers/ping.rb
-    lib/tiller/api/handlers/config.rb
-    lib/tiller/api/handlers/globals.rb
-    lib/tiller/api/handlers/templates.rb
-    lib/tiller/api/handlers/template.rb
     lib/tiller/loader.rb
     lib/tiller/logger.rb
     lib/tiller/options.rb
     lib/tiller/util.rb
+    lib/tiller/redact.rb
     lib/tiller/defaults.rb
     lib/tiller/datasource.rb
-    lib/tiller/json.rb
     lib/tiller/consul.rb
     lib/tiller/kv.rb
     lib/tiller/templatesource.rb

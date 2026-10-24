@@ -8,5 +8,3 @@ data_sources:
 template_sources:
   - file
 
-api_enable: true
-api_port: 6275

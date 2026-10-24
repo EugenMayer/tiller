@@ -1,4 +1,18 @@
 # 3.x
+  * 3.1.0 (24/Oct/2026)
+    * Security hardening, see [SECURITY.md](https://github.com/EugenMayer/tiller/blob/master/SECURITY.md) for the trust model
+    * BREAKING: the HTTP API (`-a`/`--api`, `-p`/`--api-port`, `api_enable`, `api_port`) was removed. It exposed the configuration and all values, including environment variables and secrets, without authentication on all interfaces
+    * BREAKING: with `dynamic_values`, ERb syntax is only evaluated in values from the `defaults` and `file` data sources. It is no longer evaluated in values from other data sources like `environment` or `consul`, as that was code execution for anyone who could set an environment variable or write to Consul. The result of an evaluation is not evaluated again. Custom data sources can opt in with `@trusted_values = true`
+    * BREAKING: the `consul` data source no longer provides target values (`target`, `user`, `group`, `perms`, `exec_on_write`, and with them which templates are built for an environment). These now only come from your configuration files, Consul only provides values. The `values: target:` setting of the consul block is gone
+    * BREAKING: `tiller_lib` is now searched after the libraries Tiller and Ruby ship with, instead of before. Plugins can no longer replace built-in plugins or libraries by using the same name
+    * Plugin, helper and environment names can only be plain names (letters, numbers, underscores; environments may also contain `.` and `-`)
+    * Files are opened with `File.open`/`File.read` instead of `Kernel#open`, which would run a command if a target started with `|`. YAML is loaded with `safe_load`. `exec` arrays are started without `eval`
+    * Values of keys that look like secrets (password, token, secret, key...) are masked in the log
+    * The Consul ACL token can be set with `CONSUL_HTTP_TOKEN`, and a warning is logged if it is sent over `http`
+    * When running as root, a file with `perms` gets its permissions before the content is written, instead of after. Before, the content was briefly readable with the default or old permissions
+    * Checksums (`--md5sum`) use SHA256 instead of MD5. The options keep their name
+    * Fixed the undefined `EXIT_FAIL` used when a plugin does not support the requested plugin API version
+    * Releases get a `.sha256` file and a build provenance attestation. Workflow actions are pinned to commit SHAs, Dependabot and `bundle-audit` were added, and the tests verify the checksum of the Consul download
   * 3.0.2 (24/Oct/2026)
     * Release pipeline: pushing a version tag builds the gem and attaches it to a GitHub release
     * Installation is documented via git (Bundler) and the release `.gem` (curl), as Tiller is not published on rubygems.org

@@ -2,6 +2,9 @@ name: Ruby
 
 on: push
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -10,18 +13,18 @@ jobs:
       matrix:
         ruby: ["3.3", "3.4"]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@7f797815d8adceb1c412e7abefdd1ab4abc47a5f # v1.335.0
         with:
           bundler: default
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: false
-#      - name: Install consul
-#        run: |
-#          wget -O /tmp/consul.zip https://releases.hashicorp.com/consul/1.16.0/consul_1.16.0_linux_amd64.zip
-#          cd /usr/local/bin/ && unzip /tmp/consul.zip
-      - name: Run tests
+      - name: Install dependencies
         run: bundle install
+      - name: Check dependencies for known vulnerabilities
+        run: bundle exec bundle-audit check --update
       - name: Run tests
         run: bundle exec rake

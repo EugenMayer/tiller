@@ -9,11 +9,9 @@ module Tiller
     'default_environment' => 'development',
     :no_exec              => false,
     :verbose              => false,
-    'api_enable'          => false,
     'md5sum'              => false,
     'md5sum_noexec'       => false,
     'deep_merge'          => false,
-    'api_port'            => 6275,
     'plugin_api_version'  => 1
   }
 end
@@ -29,8 +27,7 @@ module Tiller::Consul
       'values'    => {
           'global'    => '/tiller/globals/all',
           'per_env'   => '/tiller/globals/%e',
-          'template'  => '/tiller/values/%e/%t',
-          'target'    => '/tiller/target_values/%t/%e'
+          'template'  => '/tiller/values/%e/%t'
       }
     }
   end

@@ -84,3 +84,92 @@ Feature: Consul plugin
     test_var: This is a template var from the development env
     """
     And the output should contain "No Consul configuration block for this environment"
+
+  Scenario: Consul can not provide target values like the target, owner or exec_on_write
+    Given I use a fixture named "consul"
+    When I successfully run `tiller -b . -e development`
+    Then a file named "template1.txt" should exist
+    And a file named "from-consul.txt" should not exist
+    And a file named "pwned.txt" should not exist
+
+  Scenario: Consul is not trusted to provide ERb that gets evaluated
+    Given a file named "common.yaml" with:
+    """
+    ---
+    exec: [ "true" ]
+    data_sources: [ "file", "consul" ]
+    template_sources: [ "file" ]
+    dynamic_values: true
+
+    consul:
+      url: "http://127.0.0.1:8500"
+
+    environments:
+      evilerb:
+        template1.erb:
+          target: template1.txt
+    """
+    And a directory named "templates"
+    And a file named "templates/template1.erb" with:
+    """
+    value: <%= consul_value %>
+    """
+    When I successfully run `tiller -b . -n -e evilerb`
+    Then the file "template1.txt" should contain "value: <%= 6 * 7 %>"
+    And the file "template1.txt" should not contain "42"
+
+  Scenario: The Consul ACL token over http gives a warning and is never logged
+    Given a file named "common.yaml" with:
+    """
+    ---
+    exec: [ "true" ]
+    data_sources: [ "file", "consul" ]
+    template_sources: [ "file" ]
+
+    consul:
+      url: "http://127.0.0.1:8500"
+      acl_token: "secret-token-value"
+
+    environments:
+      development:
+        template1.erb:
+          target: template1.txt
+    """
+    And a directory named "templates"
+    And a file named "templates/template1.erb" with:
+    """
+    value: <%= consul_global %>
+    """
+    When I successfully run `tiller -b . -d -n`
+    Then the file "template1.txt" should contain "value: consul global value"
+    And the output should contain "The Consul ACL token is sent unencrypted, use an https URL"
+    And the output should not contain "secret-token-value"
+
+  Scenario: The Consul ACL token can come from the environment
+    Given a file named "common.yaml" with:
+    """
+    ---
+    exec: [ "true" ]
+    data_sources: [ "file", "consul" ]
+    template_sources: [ "file" ]
+
+    consul:
+      url: "http://127.0.0.1:8500"
+
+    environments:
+      development:
+        template1.erb:
+          target: template1.txt
+    """
+    And a directory named "templates"
+    And a file named "templates/template1.erb" with:
+    """
+    value: <%= consul_global %>
+    """
+    And I set the environment variables to:
+      | variable          | value          |
+      | CONSUL_HTTP_TOKEN | env-token-value |
+    When I successfully run `tiller -b . -d -n`
+    Then the output should contain "Using Consul ACL token"
+    And the output should not contain "env-token-value"
+

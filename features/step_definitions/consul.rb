@@ -1,7 +1,5 @@
-require 'open-uri'
 require 'diplomat'
 require 'pp'
-require 'openssl'
 
 CONSUL_DATA_DIR="/tmp/tiller-consul-data"
 
@@ -14,17 +12,20 @@ end
 
 When(/^I have downloaded consul "(.+)" to "(.+)"$/) do |version, path|
   if RUBY_PLATFORM =~ /darwin/
-    uri = "https://releases.hashicorp.com/consul/#{version}/consul_#{version}_darwin_amd64.zip"
+    platform = 'darwin_amd64'
   elsif RUBY_PLATFORM =~ /linux/
-    uri = "https://releases.hashicorp.com/consul/#{version}/consul_#{version}_linux_amd64.zip"
+    platform = 'linux_amd64'
   else
     fail!("Unsupported platform for consul")
   end
+  sha256 = CONSUL_SHA256.fetch(version, {})[platform]
+  fail!("No checksum known for consul #{version} #{platform}, add it to features/support/download.rb") if sha256.nil?
+
+  uri = "https://releases.hashicorp.com/consul/#{version}/consul_#{version}_#{platform}.zip"
   puts "Downloading #{uri}"
 
-  dirname = File.dirname(path)
-  system("mkdir -p #{dirname}")
-  hashicorp_download(uri, path)
+  FileUtils.mkdir_p(File.dirname(path))
+  verified_download(uri, path, sha256)
 end
 
 

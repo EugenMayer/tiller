@@ -3,6 +3,7 @@ require 'yaml'
 class FileDataSource < Tiller::DataSource
 
   @plugin_api_versions = [1, 2]
+  @trusted_values = true
 
   # Open and parse the environment file. Tries from v2 format common.yaml first, if that
   # failes, then it looks for separate environment files.
@@ -27,7 +28,7 @@ class FileDataSource < Tiller::DataSource
       begin
         env_file = File.join(Tiller::config[:tiller_base], 'environments',
                              "#{Tiller::config[:environment]}.yaml")
-        @config_hash = YAML.load(open(env_file))
+        @config_hash = load_yaml_file(env_file)
         @config_hash ||= Hash.new #in case YAML.load returned false
       rescue
         abort("Error : Could not load environment file #{env_file}")

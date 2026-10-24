@@ -20,11 +20,12 @@ def populate_consul_test_data(url="http://127.0.0.1:8500")
   # Populate template values for production environment
   Diplomat::Kv.put('tiller/values/production/template1.erb/consul_value', 'production value from consul for template1.erb')
   Diplomat::Kv.put('tiller/values/production/template2.erb/consul_value', 'production value from consul for template2.erb')
-  # Populate target_values for environments
-  Diplomat::Kv.put('tiller/target_values/template1.erb/development/target', 'template1.txt')
-  Diplomat::Kv.put('tiller/target_values/template2.erb/development/target', 'template2.txt')
-  # No template 2 for production
-  Diplomat::Kv.put('tiller/target_values/template1.erb/production/target', 'template1.txt')
+  # Target values are not read from Consul, so these must be ignored
+  Diplomat::Kv.put('tiller/target_values/template1.erb/development/target', 'from-consul.txt')
+  Diplomat::Kv.put('tiller/target_values/template1.erb/development/exec_on_write/0', 'touch pwned.txt')
+
+  # Template values written by someone who should not be trusted, see the "Consul is not trusted" scenario
+  Diplomat::Kv.put('tiller/values/evilerb/template1.erb/consul_value', '<%= 6 * 7 %>')
 end
 
 if ! defined?(Cucumber)

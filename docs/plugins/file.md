@@ -51,17 +51,16 @@ Of course, this means you need an environment block for each replica set you pla
 
 
 ### Overriding common settings
-You can also override defaults from common.yaml if you specify them in a `common` block in an environment section. This means you can specify a different `exec`, enable the API, or configure various plugins to use different settings on a per-environment basis, e.g.
+You can also override defaults from common.yaml if you specify them in a `common` block in an environment section. This means you can specify a different `exec`, or configure various plugins to use different settings on a per-environment basis, e.g.
 
 ```yaml
 environments:
 
 	development:
 		
-		# Only enable API for development environment
+		# Only override these settings for the development environment
 		common:
-		  api_enable: true
-		  api_port: 1234
+		  exec: sleep 10
 		    ...
 		    ... rest of config file snipped
 		    ...

@@ -126,6 +126,8 @@ template_sources:
 
 If you don't want to use the default directory of `/usr/local/lib/tiller`, you can specify an alternate location by setting the `tiller_lib` environment variable, or by using the `-l`/`--libdir` flag on the command line.
 
+This directory is searched after the libraries that Tiller and Ruby ship with, so a plugin can't replace a built-in one (or any library like `json`) by using the same name. Plugin and helper names may only contain letters, numbers and underscores.
+
 ## Logging
 There is a class logger available via `Tiller::log`. The verbosity is set to WARN by default but can be set to `INFO` when Tiller is called with the `--verbose` flag, and `DEBUG` when the `-d` flag is used. EG:
 

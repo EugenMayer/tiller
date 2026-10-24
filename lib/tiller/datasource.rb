@@ -11,6 +11,13 @@ module Tiller
     inheritable_attributes :plugin_api_versions
     @plugin_api_versions = [ 1 ]
 
+    # Whether the values of a data source are trusted, i.e. only controlled by whoever controls the Tiller
+    # configuration files. The dynamic_values feature evaluates ERb syntax found in values, which is code execution
+    # for anything that others can write to (Consul, environment variables...), so it is only done for the values
+    # of trusted data sources. Plugins are not trusted unless they say so (@trusted_values = true).
+    inheritable_attributes :trusted_values
+    @trusted_values = false
+
     def initialize
       setup
     end

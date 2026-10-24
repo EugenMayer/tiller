@@ -10,13 +10,13 @@ The following examples are intended to give you a very quick overview of how Til
 
 Install Tiller from the `.gem` file attached to a [release](https://github.com/EugenMayer/tiller/releases) (Tiller is not published on rubygems.org):
 ```
-$ curl -fsSL -o tiller-3.0.2.gem https://github.com/EugenMayer/tiller/releases/download/3.0.2/tiller-3.0.2.gem
-$ gem install ./tiller-3.0.2.gem
+$ curl -fsSL -o tiller-3.1.0.gem https://github.com/EugenMayer/tiller/releases/download/3.1.0/tiller-3.1.0.gem
+$ gem install ./tiller-3.1.0.gem
 ```
 
 Or, with Bundler, from git:
 ```ruby
-gem 'tiller', git: 'https://github.com/EugenMayer/tiller', tag: '3.0.2'
+gem 'tiller', git: 'https://github.com/EugenMayer/tiller', tag: '3.1.0'
 ```
 
 Create the necessary work directories:

@@ -51,14 +51,6 @@ class ConsulDataSource < Tiller::DataSource
     fetch_all_keys(path)
   end
 
-  def target_values(template_name)
-    return {} unless Tiller::config.has_key?('consul')
-    path = interpolate("#{@consul_config['values']['target']}", template_name)
-    Tiller::log.debug("#{self} : Fetching template target values from #{path}")
-    fetch_all_keys(path)
-  end
-
-
   def fetch_all_keys(path)
     keys = Diplomat::Kv.get(path, { keys: true, :dc => @consul_config['dc'] }, :return)
     all_keys = Hash.new

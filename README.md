@@ -11,15 +11,17 @@ Tiller is not published on rubygems.org. Use one of the following instead, and r
 From git, with Bundler, pinned to a tag:
 
 ```ruby
-gem 'tiller', git: 'https://github.com/EugenMayer/tiller', tag: '3.0.2'
+gem 'tiller', git: 'https://github.com/EugenMayer/tiller', tag: '3.1.0'
 ```
 
 From the `.gem` file attached to each release:
 
 ```bash
-curl -fsSL -o tiller-3.0.2.gem https://github.com/EugenMayer/tiller/releases/download/3.0.2/tiller-3.0.2.gem
-gem install ./tiller-3.0.2.gem
+curl -fsSL -o tiller-3.1.0.gem https://github.com/EugenMayer/tiller/releases/download/3.1.0/tiller-3.1.0.gem
+gem install ./tiller-3.1.0.gem
 ```
+
+Every release has a `.sha256` file and a build provenance attestation next to the `.gem`, see [SECURITY.md](SECURITY.md) on how to verify them.
 
 # Documentation
 The documentation lives in the [docs](docs/) directory of this repository and is the only up-to-date source. The version hosted on readthedocs.io is outdated and does not match this fork, so please do not use it.
@@ -39,9 +41,11 @@ What is left:
 
 * Data sources: `defaults`, `file`, `consul` and `environment`
 * Template sources: `file`
-* Helper modules, the HTTP API, checksums, `exec_on_write` and the other core features
+* Helper modules, checksums, `exec_on_write` and the other core features
 
 Removed are all the other data and template sources (Vault, Ansible Vault, HTTP, random, XML, external files, JSON/nested environment, Consul templates, regex and reusable templates). Configurations that still reference them fail to load, see the [changelog](docs/changelog.md) for details.
+
+It also got a security pass, see [SECURITY.md](SECURITY.md) for the trust model: the HTTP API was removed, ERb in values is only evaluated for values from files, and Consul only provides values, it can't choose where files are written.
 
 Also note that `-v` now shows the version. Verbose output is available as `--verbose` only.
 

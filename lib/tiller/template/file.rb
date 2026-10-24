@@ -17,6 +17,6 @@ class FileTemplateSource < Tiller::TemplateSource
 
   # Just open and return the file
   def template(template_name)
-    open(File.join(@template_dir, template_name)).read
+    File.read(File.join(@template_dir, template_name))
   end
 end

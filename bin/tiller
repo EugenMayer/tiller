@@ -15,8 +15,6 @@ require 'fileutils'
 require 'optparse'
 require 'pp'
 require 'json'
-require 'socket'
-require 'tiller/api'
 require 'tiller/defaults'
 require 'tiller/loader'
 require 'tiller/options'
@@ -24,12 +22,16 @@ require 'tiller/util'
 require 'tiller/templatesource'
 require 'tiller/datasource'
 require 'tiller/logger'
-require 'digest/md5'
+require 'digest'
 require 'tiller/render'
 require 'tiller/kv'
 require 'tiller/version'
 
 EXIT_SUCCESS = 0
+EXIT_FAIL = 1
+
+# Environment names, plugin names and helper names are limited to this
+SAFE_NAME = /\A[A-Za-z0-9_][A-Za-z0-9_.-]*\z/
 
 # And we're on our way...
 module Tiller
@@ -48,8 +50,9 @@ module Tiller
 
   log.debug("Executable: #{__FILE__}")
 
-  # Add tiller_lib to the LOAD PATH so we can pull in user-defined plugins
-  $LOAD_PATH.unshift(config[:tiller_lib]) unless $LOAD_PATH.include?(config[:tiller_lib])
+  # Add tiller_lib to the end of the LOAD PATH so we can pull in user-defined plugins. It is not put in front, as
+  # that would let any file in that directory replace the libraries Tiller requires (json, yaml, diplomat...)
+  $LOAD_PATH.push(config[:tiller_lib]) unless $LOAD_PATH.include?(config[:tiller_lib])
 
   # Load the common YAML configuration files
   begin
@@ -58,7 +61,7 @@ module Tiller
     # Is there a common.yaml ? If so, load that first
     common_file = File.join(config[:tiller_base], 'common.yaml')
     if File.exist?(common_file)
-      config.merge!(YAML.load(open(common_file)))
+      config.merge!(load_yaml_file(common_file))
       config_loaded = true
     end
 
@@ -66,7 +69,7 @@ module Tiller
     config_d_dir =  File.join(config[:tiller_base], 'config.d')
     Dir.glob(File.join(config_d_dir, '**', '*.yaml')).sort.each do |f|
       log.info("Loading config file #{f}")
-      config.deep_merge!(YAML.load(open(f)))
+      config.deep_merge!(load_yaml_file(f))
       config_loaded = true
     end
 
@@ -88,6 +91,11 @@ module Tiller
 
   # Set the environment if not already done through ENV or -e flag
   config[:environment] = config['default_environment'] if config[:environment].nil?
+
+  # The environment name is used in file names and in paths of data sources, so it must be a plain name
+  unless config[:environment].to_s =~ SAFE_NAME
+    abort "Error : Invalid environment name '#{config[:environment]}'"
+  end
 
   log.info("Using configuration from #{config[:tiller_base]}")
   log.info("Using plugins from #{config[:tiller_lib]}/tiller")
@@ -115,7 +123,7 @@ module Tiller
         if value.is_a?(String) && value.include?('<%')
           begin
             parsed_value = Tiller::render(value, direct_render: true, namespace: data_class.new.global_values)
-            log.debug("Parsed ERb of #{path.join('/')} as #{parsed_value}", dedup: false)
+            log.debug("Parsed ERb of #{path.join('/')} as #{Tiller::Redact.value(path.last, parsed_value)}", dedup: false)
             config.deep_merge!((path + [parsed_value]).reverse.reduce { |s,e| { e => s } })
           rescue NameError => e
             # This happens if there is no value provided by the currently active datasource. If so,
@@ -135,21 +143,13 @@ module Tiller
 
   log.debug("Dynamic values specified. Will parse all values as ERb.") if config.assoc('dynamic_values')
 
-  # We now don't actually use the global_values hash for anything when constructing the templates (as they can be
-  # over-ridden by template values), but it's here to keep compatibility with the v1 API.
-  global_values = { 'environment' => config[:environment] }
-
   data_classes.each do |data_class|
     # Now need to see if any of the common.yaml values have been over-ridden by a datasource
     # e.g. environment-specific execs and so on. We do this first so that connection strings
-    # to datasources (e.g. zookeeper) can be included in the config before we obtain any
-    # values.
+    # to datasources can be included in the config before we obtain any values.
     config.merge!(data_class.new.common) do |key, old, new|
       warn_merge(key, old, new, 'common', data_class.to_s)
     end
-
-    # Merge for the sake of the v1 API
-    global_values.merge!(data_class.new.global_values)
   end
 
   # Get all Templates for the given environment
@@ -165,7 +165,6 @@ module Tiller
 
   # Now we go through each template we've identified, and get the
   # values for each one.
-  all_templates       = {}
   skipped_templates   = 0
   updated_templates   = 0
   pids                = []
@@ -178,27 +177,42 @@ module Tiller
     Tiller::tiller = { 'environment' => config[:environment] }
     target_values  = {}
 
+    # ERb syntax found in values of trusted data sources, by path (values) or key (target values). Only these are
+    # evaluated for dynamic_values, see Tiller::DataSource.trusted_values
+    trusted_erb        = {}
+    trusted_target_erb = {}
+
     # Now we add to the 'tiller' hash with values from each DataSource, warning if we
     # get duplicate values.
     data_classes.each do |data_class|
       dc = data_class.new
 
       # First take the global values from the datasource
-      tiller.tiller_merge!(data_class.new.global_values) do |key, old, new|
+      global = data_class.new.global_values
+      tiller.tiller_merge!(global) do |key, old, new|
         warn_merge(key, old, new, 'data', data_class.to_s)
       end
+      remember_erb(trusted_erb, global) if data_class.trusted_values
 
       # Then merge template values over the top of them
-      if dc.values(template) != nil
-        tiller.tiller_merge!(dc.values(template)) do |key, old, new|
+      template_values = dc.values(template)
+      if template_values != nil
+        tiller.tiller_merge!(template_values) do |key, old, new|
           warn_merge(key, old, new, 'data', data_class.to_s)
         end
+        remember_erb(trusted_erb, template_values) if data_class.trusted_values
       end
 
       # Now get target_values (where the file should be installed to,
       # permissions and so on)
-      target_values.tiller_merge!(dc.target_values(template)) do |key, old, new|
+      source_target_values = dc.target_values(template)
+      target_values.tiller_merge!(source_target_values) do |key, old, new|
         warn_merge(key, old, new, 'target', data_class.to_s)
+      end
+      if data_class.trusted_values
+        source_target_values.each do |key, value|
+          trusted_target_erb[key] = value if value.is_a?(String) && value.include?('<%')
+        end
       end
 
       # Dynamic config stuff, allows us to use ERb syntax inside configuration.
@@ -206,7 +220,13 @@ module Tiller
         # Need to recursively walk the hash, looking for ERb syntax
         tiller.deep_traverse do |path,value|
           if value.is_a?(String) && value.include?('<%')
-            log.debug("Found ERb syntax for #{value} at #{path}")
+            # Only evaluate what a trusted data source provided. Anything else (including the output of an
+            # evaluation) is left alone, as evaluating it would be code execution for whoever controls the value.
+            if trusted_erb[path] != value
+              log.debug("Not evaluating ERb syntax at #{path.join('/')}, the value does not come from a trusted data source")
+              next
+            end
+            log.debug("Found ERb syntax for #{Tiller::Redact.value(path.last, value)} at #{path}")
             parsed_value = Tiller::render(value, direct_render: true)
             # Proper Ruby voodoo here.
             # See http://stackoverflow.com/questions/19304135/deep-nest-a-value-into-a-hash-given-a-path-array for
@@ -216,7 +236,11 @@ module Tiller
         end
         target_values.each do |key ,value|
           if value.is_a?(String) && value.include?('<%')
-            log.debug("Found ERb syntax for target value #{key}:#{value}}")
+            if trusted_target_erb[key] != value
+              log.debug("Not evaluating ERb syntax in target value #{key}, it does not come from a trusted data source")
+              next
+            end
+            log.debug("Found ERb syntax for target value #{key}:#{Tiller::Redact.value(key, value)}")
             target_values[key] = Tiller::render(value, direct_render: true)
           end
         end
@@ -240,31 +264,35 @@ module Tiller
 
     filename = target_values['target']
 
-    # MD5 checksum of templates
+    # Checksum of templates
     if config['md5sum'] && File.exist?(filename)
-      template_md5 = Digest::MD5.hexdigest(parsed_template)
-      log.debug("MD5 of #{template} is #{template_md5}")
-      file_md5 = Digest::MD5.hexdigest(File.read(filename))
-      log.debug("MD5 of #{filename} is #{file_md5}")
+      template_digest = Digest::SHA256.hexdigest(parsed_template)
+      log.debug("Checksum of #{template} is #{template_digest}")
+      file_digest = Digest::SHA256.hexdigest(File.read(filename))
+      log.debug("Checksum of #{filename} is #{file_digest}")
 
-      if template_md5 == file_md5
+      if template_digest == file_digest
         log.info("Content unchanged for #{template}, not writing anything")
         skipped_templates += 1
         next
       end
     end
 
-    target = open(target_values['target'], 'w')
-    target.print(parsed_template)
-    target.close
+    # When running as root, a new file is created with its final permissions, and an existing file gets them before
+    # the new content is written. Otherwise the content would be readable with the default (or old) permissions until
+    # they are set below. The resulting permissions are the same either way.
+    apply_perms = Process::Sys.geteuid == 0 && target_values.key?('perms')
+    create_mode = apply_perms && target_values['perms'].is_a?(Integer) ? target_values['perms'] : 0666
+    if apply_perms && File.exist?(target_values['target'])
+      FileUtils.chmod(target_values['perms'], target_values['target'])
+    end
+
+    # File.open, not Kernel#open, as the latter would run a command if the target started with a pipe character
+    File.open(target_values['target'], File::WRONLY | File::CREAT | File::TRUNC, create_mode) do |target|
+      target.print(parsed_template)
+    end
 
     updated_templates += 1
-
-    # config is redundant in target_values, remove it for the final status hash.
-    all_templates[template] = {
-        'merged_values' => tiller,
-        'target_values' => target_values.reject{|k,_v| k=='config'}
-    }
 
     # Set permissions if we are running as root
     if Process::Sys.geteuid == 0
@@ -304,13 +332,6 @@ module Tiller
 
   puts 'Template generation completed'
 
-  # Final status structure for API
-  tiller_api_hash = {'config' => config, 'global_values' => global_values, 'templates' => all_templates}
-
-  if config['api_enable']
-    Thread.start{ tiller_api(tiller_api_hash) }
-  end
-
   # Override the exec if run with -x (see options.rb)
   if config.has_key?(:alt_exec)
     log.info("Overriding exec parameter [#{config['exec']}] with [#{config[:alt_exec]}]")
@@ -327,7 +348,6 @@ module Tiller
     # All templates created, so let's start the replacement process
     puts "Executing #{config['exec']}..."
 
-    # Spawn and wait so API can continue to run
     child_pid = launch(config['exec'])
     pids.push(child_pid)
 

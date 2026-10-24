@@ -3,14 +3,20 @@ The following examples are intended to give you a very quick overview of how Til
 
 
 # Requirements
- * Ruby >= 1.9 (2.x series preferred, 2.3 is ideal)
+ * Ruby >= 3.3
  * "gem" command (usually provided as part of your operating system's Ruby packages)
  
 # Setup
 
-Install Tiller:
+Install Tiller from the `.gem` file attached to a [release](https://github.com/EugenMayer/tiller/releases) (Tiller is not published on rubygems.org):
 ```
-$ gem install tiller 
+$ curl -fsSL -o tiller-3.0.2.gem https://github.com/EugenMayer/tiller/releases/download/3.0.2/tiller-3.0.2.gem
+$ gem install ./tiller-3.0.2.gem
+```
+
+Or, with Bundler, from git:
+```ruby
+gem 'tiller', git: 'https://github.com/EugenMayer/tiller', tag: '3.0.2'
 ```
 
 Create the necessary work directories:

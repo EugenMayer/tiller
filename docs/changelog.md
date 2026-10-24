@@ -1,7 +1,8 @@
 # 3.x
-  * 3.0.1 (24/Oct/2026)
-    * banner changed
-    * -v is now version, not verbose
+  * 3.0.2 (24/Oct/2026)
+    * Release pipeline: pushing a version tag builds the gem and attaches it to a GitHub release
+    * Installation is documented via git (Bundler) and the release `.gem` (curl), as Tiller is not published on rubygems.org
+    * README: documentation is read from the repository `docs/`, added a "Since 2026" section, removed the outdated chat and readthedocs links
   * 3.0.1 (24/Oct/2026)
     * banner changed
     * -v is now version, not verbose

@@ -5,6 +5,22 @@ You might find this particularly useful if you're using Docker, as you can ship 
 
 However, its use is not just limited to Docker; you may also find it useful as a sort of "proxy" that can provide values to application configuration files from a data source that the application does not natively support. 
 
+# Installation
+Tiller is not published on rubygems.org. Use one of the following instead, and replace the version with the release you want (see the [releases](https://github.com/EugenMayer/tiller/releases)).
+
+From git, with Bundler, pinned to a tag:
+
+```ruby
+gem 'tiller', git: 'https://github.com/EugenMayer/tiller', tag: '3.0.2'
+```
+
+From the `.gem` file attached to each release:
+
+```bash
+curl -fsSL -o tiller-3.0.2.gem https://github.com/EugenMayer/tiller/releases/download/3.0.2/tiller-3.0.2.gem
+gem install ./tiller-3.0.2.gem
+```
+
 # Documentation
 The documentation lives in the [docs](docs/) directory of this repository and is the only up-to-date source. The version hosted on readthedocs.io is outdated and does not match this fork, so please do not use it.
 
